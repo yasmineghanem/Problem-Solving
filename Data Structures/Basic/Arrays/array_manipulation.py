@@ -18,13 +18,34 @@ import sys
 
 def arrayManipulation(n, queries):
     # Write your code here
-    indices = [0 for _ in range(n)]
+    values = [0 for _ in range(n)]
 
     for query in queries:
-        query_list = [query[2] for _ in range(query[0]-1, query[1])]
-        indices[query[0]-1:query[1]] = [sum(x) for x in zip(query_list, indices[query[0]-1:query[1]])]
+        a, b, k = query
 
-    return max(indices)
+        values[a-1] += k
+
+        if b < n:
+            values[b] -= k
+
+    # cumsum = [0 for _ in range(n)]
+
+    # for i, value in enumerate(values):
+    #     if i == 0:
+    #         cumsum[i] = value
+    #         continue
+
+    #     cumsum[i] = cumsum[i-1] + value
+
+    max_value = -math.inf
+    cumsum = 0
+
+    for value in values:
+        cumsum += value
+        max_value = max(cumsum, max_value)
+
+    return max_value
+
 
 if __name__ == '__main__':
     first_multiple_input = input().rstrip().split()
@@ -39,3 +60,5 @@ if __name__ == '__main__':
         queries.append(list(map(int, input().rstrip().split())))
 
     result = arrayManipulation(n, queries)
+
+    print(result)
